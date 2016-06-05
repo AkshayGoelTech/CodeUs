@@ -1,0 +1,82 @@
+<!doctype html>
+<!-- See http://www.firepad.io/docs/ for detailed embedding docs. -->
+<html>
+<head>
+  <meta charset="utf-8" />
+
+  <!--Stylesheet-->
+  <link rel="stylesheet" href="main.css" />
+
+  <!-- Firebase -->
+  <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+
+  <!-- ACE and its JavaScript mode and theme files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/mode-javascript.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-textmate.js"></script>
+
+  <!-- Firepad -->
+  <link rel="stylesheet" href="firepad.css" />
+  <script src="firepad.js"></script>
+
+  <style>
+    html { height: 100%; }
+    body { margin: 0; height: 100%; position: relative; }
+    /* Height / width / positioning can be customized for your use case.
+       For demo purposes, we make firepad fill the entire browser. */
+    
+  </style>
+</head>
+
+<body>
+  <div id="firepad-container"></div>
+
+  <script>
+    function init() {
+      //// Initialize Firebase.
+      var firepadRef = setUpFirepad();
+      // TODO: Replace above line with:
+      // var firepadRef = new Firebase('<YOUR FIREBASE URL>');
+
+      //// Create ACE
+      var editor = ace.edit("firepad-container");
+      editor.setTheme("ace/theme/textmate");
+      var session = editor.getSession();
+      session.setUseWrapMode(true);
+      session.setUseWorker(false);
+      session.setMode("ace/mode/javascript");
+
+      //// Create Firepad.
+      var firepad = Firepad.fromACE(firepadRef, editor, {
+        defaultText: '// JavaScript Editing with Firepad!\nfunction go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
+      });
+
+      firepadRef.child("users").on("value", function(snapshot) {
+          if (snapshot.numChildren() == 1) {
+            firepadRef.onDisconnect().remove();
+          }
+      });
+    }
+
+    // Helper to get hash from end of URL or generate a random one.
+    function setUpFirepad() {
+      var ref = new Firebase('https://real-time-interview-project.firebaseio.com/');
+      var hash = window.location.hash.replace(/#/g, '');
+      if (hash) {
+        ref = ref.child(hash);
+      } else {
+        ref = ref.push(); // generate unique location.
+        window.location = window.location + '#' + ref.key(); // add it as a hash to the URL.
+      }
+
+      if (typeof console !== 'undefined')
+        console.log('Firebase data: ', ref.toString());
+
+      return ref;
+    }
+
+    window.onload = init;
+
+  </script>
+</body>
+</html>
