@@ -5,8 +5,20 @@
   <meta charset="utf-8" />
 
 
-  <!--Stylesheet-->
-  <link rel="stylesheet" href="main.css" />
+
+  <!--BOOTSTRAP-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  <!--Main-->
+  <link rel="stylesheet" href="css/main.css" />
+  <script src="js/main.js"></script>
 
   <!-- Firebase -->
   <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
@@ -17,16 +29,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-textmate.js"></script>
 
   <!-- Firepad -->
-  <link rel="stylesheet" href="firepad.css" />
-  <script src="firepad.js"></script>
-
-  <style>
-    html { height: 100%; }
-    body { margin: 0; height: 100%; position: relative; }
-    /* Height / width / positioning can be customized for your use case.
-       For demo purposes, we make firepad fill the entire browser. */
-    
-  </style>
+  <link rel="stylesheet" href="css/firepad.css" />
+  <script src="js/firepad.js"></script>
 </head>
 
 <body>
@@ -34,12 +38,9 @@
 
   <script>
     function init() {
-      //// Initialize Firebase.
       var firepadRef = setUpFirepad();
-      // TODO: Replace above line with:
-      // var firepadRef = new Firebase('<YOUR FIREBASE URL>');
 
-      //// Create ACE
+      // Create ACE
       var editor = ace.edit("firepad-container");
       editor.setTheme("ace/theme/textmate");
       var session = editor.getSession();
@@ -47,7 +48,7 @@
       session.setUseWorker(false);
       session.setMode("ace/mode/javascript");
 
-      //// Create Firepad.
+      // Create Firepad.
       var firepad = Firepad.fromACE(firepadRef, editor, {
         defaultText: '// JavaScript Editing with Firepad!\nfunction go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
       });
@@ -80,4 +81,5 @@
 
   </script>
 </body>
+
 </html>
