@@ -1394,6 +1394,7 @@ firepad.FirebaseAdapter = (function (global) {
     if (this.userRef_) {
       this.userRef_.child('cursor').remove();
       this.userRef_.child('color').remove();
+      this.userRef_.child('userType').remove();
     }
 
     this.ref_ = null;
@@ -1409,6 +1410,8 @@ firepad.FirebaseAdapter = (function (global) {
       this.userRef_.child('cursor').onDisconnect().cancel();
       this.userRef_.child('color').remove();
       this.userRef_.child('color').onDisconnect().cancel();
+      this.userRef_.child('userType').remove();
+      this.userRef_.child('userType').onDisconnect().cancel();
     }
 
     this.userId_ = userId;
@@ -1499,6 +1502,7 @@ firepad.FirebaseAdapter = (function (global) {
   FirebaseAdapter.prototype.initializeUserData_ = function() {
     this.userRef_.child('cursor').onDisconnect().remove();
     this.userRef_.child('color').onDisconnect().remove();
+    this.userRef_.child('userType').onDisconnect().remove();
 
     this.sendCursor(this.cursor_ || null);
     this.setColor(this.color_ || null);

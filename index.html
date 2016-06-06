@@ -30,7 +30,9 @@
 
   <!-- Firepad -->
   <link rel="stylesheet" href="css/firepad.css" />
+  <!--<script src="https://cdn.firebase.com/libs/firepad/1.3.0/firepad.min.js"></script>-->
   <script src="js/firepad.js"></script>
+
 </head>
 
 <body>
@@ -74,8 +76,15 @@
       if (typeof console !== 'undefined')
         console.log('Firebase data: ', ref.toString());
 
+      ref.child("users").on("child_added", function(snapshot) {
+        /*When I add a new child type, remember to add the required remove methods to firepad.js*/
+          ref.child("users").child(snapshot.key()).child("userType").set("interviewee");
+      });
+
       return ref;
     }
+
+    
 
     window.onload = init;
 
