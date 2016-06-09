@@ -21,7 +21,6 @@ var FirepadUserList = (function() {
     });
 
     this.userList_ = this.makeUserList_()
-    debugger;
     place.appendChild(this.userList_);
   }
 
@@ -72,8 +71,8 @@ var FirepadUserList = (function() {
     var nameInput = elt('input', null, { type: 'text', 'class': 'firepad-userlist-name-input'} );
     nameInput.value = this.displayName_;
 
-    var nameHint = elt('div', 'ENTER YOUR NAME', { 'class': 'firepad-userlist-name-hint'} );
-    if (this.hasName_) nameHint.style.display = 'none';
+    var nameHint = elt('div', '(Me)', { 'class': 'firepad-userlist-name-hint'} );
+    //if (this.hasName_) nameHint.style.display = 'none';
 
     // Update Firebase when name changes.
     var self = this;
@@ -146,8 +145,7 @@ var FirepadUserList = (function() {
         delete userId2Element[userId];
       }
     });
-
-    debugger;
+    
     return userList;
   };
 

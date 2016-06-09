@@ -11,6 +11,7 @@
  * With code from ot.js (Copyright 2012-2013 Tim Baumann)
  */
 
+var uid = "";
 (function (name, definition, context) {
   //try CommonJS, then AMD (require.js), then use global.
   if (typeof module != 'undefined' && module.exports) module.exports = definition();
@@ -1329,7 +1330,7 @@ firepad.FirebaseAdapter = (function (global) {
   // Save a checkpoint every 100 edits.
   var CHECKPOINT_FREQUENCY = 100;
 
-  function FirebaseAdapter (ref, userId, userColor) {
+  function FirebaseAdapter (ref, userId, userColor, userType) {
     this.ref_ = ref;
     this.ready_ = false;
     this.firebaseCallbacks_ = [];
@@ -1355,6 +1356,7 @@ firepad.FirebaseAdapter = (function (global) {
     if (userId) {
       this.setUserId(userId);
       this.setColor(userColor);
+      this.setUserType(userType);
 
       this.firebaseOn_(ref.root().child('.info/connected'), 'value', function(snapshot) {
         if (snapshot.val() === true) {
@@ -1489,6 +1491,11 @@ firepad.FirebaseAdapter = (function (global) {
     this.color_ = color;
   };
 
+  FirebaseAdapter.prototype.setUserType = function(userType) {
+    this.userRef_.child('userType').set(userType);
+    this.userType = userType;
+  };
+
   FirebaseAdapter.prototype.getDocument = function() {
     return this.document_;
   };
@@ -1506,6 +1513,7 @@ firepad.FirebaseAdapter = (function (global) {
 
     this.sendCursor(this.cursor_ || null);
     this.setColor(this.color_ || null);
+    this.setUserType(this.userType || null);
   };
 
   FirebaseAdapter.prototype.monitorCursors_ = function() {
@@ -1514,7 +1522,7 @@ firepad.FirebaseAdapter = (function (global) {
     function childChanged(childSnap) {
       var userId = childSnap.key();
       var userData = childSnap.val();
-      self.trigger('cursor', userId, userData.cursor, userData.color);
+      self.trigger('cursor', userId, userData.cursor, userData.color, userData.userType);
     }
 
     this.firebaseOn_(usersRef, 'child_added', childChanged);
@@ -5414,11 +5422,14 @@ firepad.Firepad = (function(global) {
       this.codeMirror_.refresh();
 
     var userId = this.getOption('userId', ref.push().key());
+    uid = userId;
+    //debugger;
     var userColor = this.getOption('userColor', colorFromUserId(userId));
+    var userType = this.getOption('userType', 'student');
 
     this.entityManager_ = new EntityManager();
 
-    this.firebaseAdapter_ = new FirebaseAdapter(ref, userId, userColor);
+    this.firebaseAdapter_ = new FirebaseAdapter(ref, userId, userColor, userType);
     if (this.codeMirror_) {
       this.richTextCodeMirror_ = new RichTextCodeMirror(this.codeMirror_, this.entityManager_, { cssPrefix: 'firepad-' });
       this.editorAdapter_ = new RichTextCodeMirrorAdapter(this.richTextCodeMirror_);
@@ -5503,6 +5514,12 @@ firepad.Firepad = (function(global) {
   Firepad.prototype.setUserColor = function(color) {
     this.firebaseAdapter_.setColor(color);
   };
+
+  Firepad.prototype.setUserType = function(userType) {
+    this.firebaseAdapter_.setUserType(userType);
+  };
+
+
 
   Firepad.prototype.getText = function() {
     this.assertReady_('getText');
@@ -5873,3 +5890,9 @@ firepad.Firepad.RichTextCodeMirrorAdapter = firepad.RichTextCodeMirrorAdapter;
 firepad.Firepad.ACEAdapter = firepad.ACEAdapter;
 
 return firepad.Firepad; }, this);
+
+/*Mine*/
+function getUserId() {
+  //debugger;
+  return uid;
+}
