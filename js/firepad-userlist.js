@@ -71,7 +71,7 @@ var FirepadUserList = (function() {
     var nameInput = elt('input', null, { type: 'text', 'class': 'firepad-userlist-name-input'} );
     nameInput.value = this.displayName_;
 
-    var nameHint = elt('div', '(Me)', { 'class': 'firepad-userlist-name-hint'} );
+    var nameHint = elt('div', '(You)', { 'class': 'firepad-userlist-name-hint'} );
     //if (this.hasName_) nameHint.style.display = 'none';
 
     // Update Firebase when name changes.
@@ -118,8 +118,9 @@ var FirepadUserList = (function() {
       colorDiv.style.backgroundColor = color;
 
       var nameDiv = elt('div', name || 'Guest', { 'class': 'firepad-userlist-name' });
+      var nameHint = elt('div', userSnapshot.child('userType').val(), { 'class': 'firepad-userlist-name-hint'} );
 
-      var userDiv = elt('div', [ colorDiv, nameDiv ], {
+      var userDiv = elt('div', [ colorDiv, nameDiv, nameHint ], {
         'class': 'firepad-userlist-user ' + 'firepad-user-' + userId
       });
       userId2Element[userId] = userDiv;

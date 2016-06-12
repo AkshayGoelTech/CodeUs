@@ -5423,9 +5423,8 @@ firepad.Firepad = (function(global) {
 
     var userId = this.getOption('userId', ref.push().key());
     uid = userId;
-    //debugger;
     var userColor = this.getOption('userColor', colorFromUserId(userId));
-    var userType = this.getOption('userType', 'student');
+    var userType = this.getOption('userType', userType_);
 
     this.entityManager_ = new EntityManager();
 

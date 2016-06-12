@@ -1,3 +1,6 @@
+
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+
 html { 
   height: 100%; 
 }
@@ -10,10 +13,12 @@ body {
   margin: 0; 
   height: 100%; 
   width:100%; 
-  background-color: #C1E1A6;
+  /*background-color: #C1E1A6;*/
+  background: #f2f2f2 url("images/overlay.png");
 }
 
-#total-container {
+
+#session-container {
   position: relative;
   margin: 20px auto;
   margin-top: 100px;
@@ -23,9 +28,10 @@ body {
   -moz-box-shadow: 0 5px 25px #333;
   -webkit-box-shadow: 0 5px 25px #333;
   box-shadow: 0 5px 25px #333;
+  display: none;
 }
 
-#total-container #userlist {
+#session-container #userlist {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -33,10 +39,67 @@ body {
   width: 175px;
 }
 
-#total-container #firepad-container {
+#session-container #firepad-container {
   position: absolute;
   left: 175px;
   right: 0;
   height: 100%;
   width: auto;
+}
+
+#main{
+  padding-top: 70px;
+  text-align: center;
+}
+
+.btn {
+  font-size: 2em;
+  background-image: none;
+  border-color: #333;
+}
+
+.container #userType {
+  text-align: center;
+  display: block;
+}
+
+  .container #userType .btn {
+    display: inline-block;
+    width: 200px;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+
+.container #name {
+  width: 100%;
+}
+
+  .container #name input {
+
+    height: 60px;
+    font-size: 55px;
+    display: inline-block;
+    font-family: "Lato";
+    font-weight: 100;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #BBB;
+    background-color: transparent;
+    z-index: 3;
+    transition: width .4s cubic-bezier(0.000, 0.795, 0.000, 1.000);
+    cursor: pointer;
+    width: 0px;
+  }
+
+    .container #name input:focus {
+      width: 50%;
+      outline: none;
+      z-index: 1;
+      cursor: text;
+      background: transparent;
+    }
+
+.userInfoContainer #goButton {
+  width: 200px;
+  display: none;
 }
