@@ -1,5 +1,4 @@
 <!doctype html>
-<!-- See http://www.firepad.io/docs/ for detailed embedding docs. -->
 <html>
 <head>
   <meta charset="utf-8" />
@@ -17,17 +16,16 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-  <!--Main-->
-  <link rel="stylesheet" href="css/main.css" />
-  <script src="js/main.js"></script>
+    <script src="https://use.fontawesome.com/898a35545c.js"></script>
 
   <!-- Firebase -->
   <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
 
   <!-- ACE and its JavaScript mode and theme files -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/mode-javascript.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/theme-textmate.js"></script>
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>-->
+  <script src="ACE/src/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/mode-javascript.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/theme-textmate.js"></script>
 
   <!-- Firepad -->
   <link rel="stylesheet" href="css/firepad.css" />
@@ -38,9 +36,14 @@
   <script src="js/firepad-userlist.js"></script>
   <link rel="stylesheet" href="css/firepad-userlist.css" />
 
+  <!--Main-->
+  <link rel="stylesheet" href="css/main.css" />
+  <script src="js/main.js"></script>
+
 </head>
 
-<body>
+<!--Toggle Debug mode with class='debug'*/-->
+<body class='debug'>
 
   <div class="container" id="main">
 
@@ -49,7 +52,7 @@
 
       <div class='container' id="userType"> 
         <button type="button" class="btn btn-primary">Student</button>
-        <button type="button" class="btn btn-primary">Interviewer</button>
+        <button type="button" class="btn btn-primary">Interviewer</button><br><br>
       </div>
 
       <br><br><br>
@@ -59,21 +62,33 @@
       </div>
       <br><br>
       <button type="button" class="btn btn-success" id="goButton" onclick="init()">Go</button>
-
+      
     </div>  
   </div>
   
   <div id="session-container">
     <div id="userlist"></div> 
     <div id="firepad-container"></div>
+    
+    <i class="fa fa-plus-square" id="plusSymbol" data-toggle="popover" title="Comment"></i>
+    <i class="fa fa-plus-square" id="activeLine-plus" style="display: none;"></i>
+    
   </div>
 
 
+<script>
 
-  <script>
+  /*If Body has class 'debug' then userInfo screen is skipped*/
+  if ($('body').hasClass('debug')) {
+    $('#main').remove();
+    $('body').css("font-family", "Lato");
+    $('#session-container').css("display","block");
+    init();
+  }  
 
+  
+</script>
 
-  </script>
 </body>
 
 </html>

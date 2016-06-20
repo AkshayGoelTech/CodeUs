@@ -1,5 +1,10 @@
+/***
+@author Akshay Goel
+http://akshaygoel.net
+ */
 
 @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+
 
 html { 
   height: 100%; 
@@ -17,46 +22,27 @@ body {
   background: #f2f2f2 url("images/overlay.png");
 }
 
-
-#session-container {
-  position: relative;
-  margin: 20px auto;
-  margin-top: 100px;
-  width: 880px;
-  height: 400px;
-  background: white;
-  -moz-box-shadow: 0 5px 25px #333;
-  -webkit-box-shadow: 0 5px 25px #333;
-  box-shadow: 0 5px 25px #333;
-  display: none;
-}
-
-#session-container #userlist {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: auto;
-  width: 175px;
-}
-
-#session-container #firepad-container {
-  position: absolute;
-  left: 175px;
-  right: 0;
-  height: 100%;
-  width: auto;
-}
-
-#main{
-  padding-top: 70px;
-  text-align: center;
-}
+/* General Elements */
 
 .btn {
   font-size: 2em;
   background-image: none;
   border-color: #333;
 }
+
+/* User Information Containers */
+
+#main{
+  padding-top: 70px;
+  text-align: center;
+}
+
+.userInfoContainer #goButton {
+  width: 200px;
+  display: none;
+}
+
+/* userType container */
 
 .container #userType {
   text-align: center;
@@ -69,6 +55,8 @@ body {
     margin-left: 50px;
     margin-right: 50px;
   }
+
+/* User-name container */
 
 .container #name {
   width: 100%;
@@ -99,7 +87,52 @@ body {
       background: transparent;
     }
 
-.userInfoContainer #goButton {
-  width: 200px;
+/* Interview Session CSS (Code-Editor Displayed Screen) */
+
+#session-container {
+  position: relative;
+  margin-top: 0px;
+  width: 100%;
+  height: 100%;
+  background: white;
+  -moz-box-shadow: 0 5px 25px #333;
+  -webkit-box-shadow: 0 5px 25px #333;
+  box-shadow: 0 5px 25px #333;
   display: none;
 }
+
+  #session-container #userlist {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 175px;
+  }
+
+  #session-container .firepad-userlist {
+    height: 100%;
+    margin-top: -20px;
+  }
+
+  #session-container #firepad-container {
+    position: absolute;
+    left: 175px;
+    right: 0;
+    height: 100%;
+    width: auto;
+    font-size: 1.1em;
+  }
+
+/* Plus Button for comment */
+
+.fa-plus-square {
+  position: absolute;
+  top: 0px;
+  margin-left: 80%;
+  z-index: 1;
+  display: none;
+}
+
+  .fa-plus-square:hover {
+    font-size: 1.5em;
+  }

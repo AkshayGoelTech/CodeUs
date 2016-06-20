@@ -1,6 +1,18 @@
+/***
+@author Akshay Goel
+http://akshaygoel.net
+ */
 
+/*
+Instaniating Variables
+ */
 var userType_ = "none";
+var lineHeight = 0;
+var symbolsList = [];
 
+/*
+Events to occur when the document is loaded.
+ */
 $(document).ready(function() {
 	$("#nameInput").keyup(function(event){
 	    if(event.keyCode == 13){
@@ -10,11 +22,38 @@ $(document).ready(function() {
 	        $('#session-container').css("display","block");
 	    }
 	});
+
+	/*Give Values to the global variables*/
+	lineHeight = parseInt($('.ace_line_group').height());
+
+	/*Set code editor css dynamically using variables*/
+	$('.ace_scroller').css('top', lineHeight);
+	$('.ace_gutter').css('top', lineHeight);
+
+	/*
+	Plus Icon Events
+	 */
+	$('.fa-plus-square').hover(
+		function() { //Mouse Enters
+		$(this).css('font-size', '1.5em');
+		},
+		function() { //Mouse Leaves
+			$(this).css('font-size', '1em');
+		}
+	);
+
+	$('#plusSymbol').popover({
+		content:"jo"
+	});
 })
 
-$(document).click(function() {
-
-	if ($('#main')[0]) {
+/*
+ Occurs when the document is clicked anywhere. Include specefic event.target
+ actions in the switch statement. May include functions to modularize code.
+ */
+$(document).click(function(event) {
+	if ($('#main')[0]) {		
+		/*In User Info Screen*/
 		switch(event.target) {
 
 			case $('#goButton')[0]:
@@ -29,7 +68,6 @@ $(document).click(function() {
 				document.getElementById('nameInput').focus();
 				document.getElementById('goButton').style.display = "inline-block";
 				userType_ = $(event.target).text();
-				console.log(userType_);
 				break;
 
 			case $("#nameInput")[0]:
@@ -41,46 +79,73 @@ $(document).click(function() {
 				break;
 		}
 	}
+	/*In Coding Screen*/
 	else {
+		switch(event.target) {
+			case $(".ace_content")[0]:
+				var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
+				var plusMargin = (lineHeight - parseInt($('#activeLine-plus').height())) / 2;
+				$('#activeLine-plus').css('top', activeLine_top + plusMargin + lineHeight);
+				$('#activeLine-plus').css('display', 'block');
+				break;
+		}
+	}	
+})
 
+$(document).mousemove(function(event) {
+	$('#plusSymbol').css('display', 'block');
+	var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
+	var plusMargin = (lineHeight - parseInt($('#plusSymbol').height())) / 2;
+
+	if (event.pageY > lineHeight) {
+		$('#plusSymbol').css('top', Math.floor(((event.pageY - lineHeight)/lineHeight))*lineHeight + lineHeight + plusMargin + 'px');
 	}
-	
-});
 
+	if (mouseOverActiveLine()) {
+		$('#plusSymbol').css('display', 'none');
+	}
+
+	function mouseOverActiveLine() {
+		if ((event.pageY > activeLine_top + lineHeight) &&
+			(event.pageY < activeLine_top + lineHeight + lineHeight)) {
+				return true;
+			}
+	}
+})
+
+
+/*
+Function to start firebase setup. It happens when user clicks go button
+ */
 function init() {
   var firepadRef = setUpFirepad();
 
   // Create ACE
   var editor = ace.edit("firepad-container");
-  editor.setTheme("ace/theme/textmate");
+  editor.setTheme("ace/theme/github");
   var session = editor.getSession();
   session.setUseWrapMode(true);
   session.setUseWorker(false);
-  session.setMode("ace/mode/javascript");
-
-  //var userId = Math.floor(Math.random() * 9999999999).toString();
+  session.setMode("ace/mode/java");
 
   // Create Firepad.
   var firepad = Firepad.fromACE(firepadRef, editor, {
-    defaultText: '// JavaScript Editing with Firepad!\nfunction go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
+    defaultText: 'function go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
   });
 
-  var userId = afterFirepad(firepadRef);
+  var userId = getUserId();
   var displayName = $('#nameInput').val();
   var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
       document.getElementById('userlist'), userId, displayName);
+
+  afterFirepad(firepadRef, editor, firepad);
+
 
   //Partially Works.
   firepadRef.child("users").on("value", function(snapshot) {
       if (snapshot.numChildren() == 1) {
         firepadRef.onDisconnect().remove();
       }
-  });
-
-  firepad.on('ready', function() {
-    if (firepad.isHistoryEmpty()) {
-      firepad.setText('Check out the user list to the left!');
-    }
   });
 
 }
@@ -101,12 +166,11 @@ function setUpFirepad() {
   return ref;
 }
 
-function afterFirepad(ref) {
+function afterFirepad(ref, ace, firepad) {
 
-  var  userId = getUserId();
-  ref = ref.child('users').child(userId);
-  console.log(ref.toString());
-
-  return userId;
+	/*Add Interviewer specefic things here*/
+	if (userType_ == "Interviewer") {
+		ace.getSession().setUseWorker(true);
+	}
 }
 
