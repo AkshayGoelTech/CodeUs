@@ -1,14 +1,13 @@
 /***
-@author Akshay Goel
+Copyright: Akshay Goel
 http://akshaygoel.net
  */
 
 /*
-Instaniating Variables
+	Instaniating Variables
  */
 var userType_ = "none";
 var lineHeight = 0;
-var symbolsList = [];
 
 /*
 Events to occur when the document is loaded.
@@ -31,25 +30,38 @@ $(document).ready(function() {
 	$('.ace_gutter').css('top', lineHeight);
 
 	/*
-	Plus Icon Events
+		Plus Icon Events
 	 */
 	$('.fa-plus-square').hover(
 		function() { //Mouse Enters
 		$(this).css('font-size', '1.5em');
+		var marginAround =(lineHeight - $(this).height())/2;
+		var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
+		$(this).css('top', lineHeight + activeLine_top + marginAround );
 		},
 		function() { //Mouse Leaves
 			$(this).css('font-size', '1em');
+			var marginAround =(lineHeight - $(this).height())/2;
+			var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
+			$(this).css('top', lineHeight + activeLine_top + marginAround );
 		}
 	);
 
-	$('#plusSymbol').popover({
-		content:"jo"
+	$('.fa-plus-square').popover({
+		html: true,
+		content: function() {
+		          return $("#plus-popover-content").html();
+		        },
+		title: function() {
+		          return $("#plus-popover-title").html();
+		        }
 	});
+
 })
 
 /*
- Occurs when the document is clicked anywhere. Include specefic event.target
- actions in the switch statement. May include functions to modularize code.
+ 	Occurs when the document is clicked anywhere. Include specefic event.target
+ 	actions in the switch statement. May include functions to modularize code.
  */
 $(document).click(function(event) {
 	if ($('#main')[0]) {		
@@ -113,9 +125,17 @@ $(document).mousemove(function(event) {
 	}
 })
 
+/*
+	STUDENT functions
+ */
 
 /*
-Function to start firebase setup. It happens when user clicks go button
+	Interviewer Functions
+ */
+
+
+/*
+	Function to start firebase setup. It happens when user clicks go button
  */
 function init() {
   var firepadRef = setUpFirepad();

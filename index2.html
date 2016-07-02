@@ -1,4 +1,8 @@
 <!doctype html>
+<!--
+Copyright: Akshay Goel
+http://akshaygoel.net
+ -->
 <html>
 <head>
   <meta charset="utf-8" />
@@ -70,8 +74,22 @@
     <div id="userlist"></div> 
     <div id="firepad-container"></div>
     
-    <i class="fa fa-plus-square" id="plusSymbol" data-toggle="popover" title="Comment"></i>
+    <i class="fa fa-plus-square" id="plusSymbol" data-toggle="popover"></i>
     <i class="fa fa-plus-square" id="activeLine-plus" style="display: none;"></i>
+
+    <div id="plus-popover-title" class="hidden">
+      <b>Add Comment</b> <i class="fa fa-close" style="float:right;"></i>
+    </div>
+
+    <div id="plus-popover-content" class="hidden">
+      <div class="form-group">
+        <textarea type="text" class="form-control" placeholder="Write Message" rows='2'></textarea>
+        
+        <button type="button" class="btn btn-default" id='sendComment'>Send</button>
+      </div>
+    </div>
+
+    
     
   </div>
 
