@@ -71,6 +71,7 @@ $(document).click(function(event) {
 				$('#main').remove();
 				$('body').css("font-family", "Lato");
 				$('#session-container').css("display","block");
+				$('#session-container').css("visibility","visible");
 				break;
 
 			case $("#userType > .btn")[0]:
@@ -174,8 +175,6 @@ function sendComment(event, top) {
 }
 
 function initSessionVars() {
-
-	//$('body').append("<div id='session-container'><div id='userlist'></div><div id='firepad-container'></div><i class='fa fa-plus-square' id='plusSymbol' data-toggle='popover'></i><i class='fa fa-plus-square' id='activeLine-plus' style='display: none;'></i>");
 	
 	/*Give Values to the global variables*/
 	lineHeight = parseInt($('.ace_line_group').height());

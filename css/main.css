@@ -98,7 +98,7 @@ body {
   -moz-box-shadow: 0 5px 25px #333;
   -webkit-box-shadow: 0 5px 25px #333;
   box-shadow: 0 5px 25px #333;
-  display: none;
+  visibility: hidden;
 }
 
   #session-container #userlist {
