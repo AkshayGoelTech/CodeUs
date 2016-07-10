@@ -18,7 +18,7 @@ http://akshaygoel.net
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
     <script src="https://use.fontawesome.com/898a35545c.js"></script>
 
@@ -47,7 +47,7 @@ http://akshaygoel.net
 </head>
 
 <!--Toggle Debug mode with class='debug'*/-->
-<body class='debug'>
+<body>
 
   <div class="container" id="main">
 
@@ -70,27 +70,20 @@ http://akshaygoel.net
     </div>  
   </div>
   
-  <div id="session-container">
-    <div id="userlist"></div> 
-    <div id="firepad-container"></div>
-    
-    <i class="fa fa-plus-square" id="plusSymbol" data-toggle="popover"></i>
-    <i class="fa fa-plus-square" id="activeLine-plus" style="display: none;"></i>
+  <div id='session-container'><div id='userlist'></div><div id='firepad-container'></div><i class='fa fa-plus-square' id='plusSymbol' data-toggle='popover'></i><i class='fa fa-plus-square' id='activeLine-plus' style='display: none;'></i>
 
-    <div id="plus-popover-title" class="hidden">
-      <b>Add Comment</b> <i class="fa fa-close" style="float:right;"></i>
-    </div>
+  <div id='plus-popover-title' class='hidden'>
+    <b>Add Comment</b> 
+    <i class='fa fa-close' id='close' style='float:right;'></i>
+  </div>
 
-    <div id="plus-popover-content" class="hidden">
-      <div class="form-group">
-        <textarea type="text" class="form-control" placeholder="Write Message" rows='2'></textarea>
+    <div id='plus-popover-content' class='hidden'>
+      <div class='form-group'>
+        <textarea type='text' class='form-control' placeholder='Write Message' rows='2'></textarea>
         
-        <button type="button" class="btn btn-default" id='sendComment'>Send</button>
+        <button type='button' class='btn btn-default' id='sendComment'>Send</button>
       </div>
     </div>
-
-    
-    
   </div>
 
 

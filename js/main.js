@@ -7,7 +7,17 @@ http://akshaygoel.net
 	Instaniating Variables
  */
 var userType_ = "none";
+var userId = null;
+var userRef = null;
+var sessionRef = null;
+
 var lineHeight = 0;
+var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
+var plusLineClickTop = 0;
+
+$(document).keyup(function(event) {
+	moveActiveLinePlus();
+});
 
 /*
 Events to occur when the document is loaded.
@@ -15,6 +25,7 @@ Events to occur when the document is loaded.
 $(document).ready(function() {
 	$("#nameInput").keyup(function(event){
 	    if(event.keyCode == 13){
+	        initSessionVars();
 	        $("#goButton").click();
 	        $('#main').remove();
 	        $('body').css("font-family", "Lato");
@@ -22,28 +33,15 @@ $(document).ready(function() {
 	    }
 	});
 
-	/*Give Values to the global variables*/
-	lineHeight = parseInt($('.ace_line_group').height());
-
-	/*Set code editor css dynamically using variables*/
-	$('.ace_scroller').css('top', lineHeight);
-	$('.ace_gutter').css('top', lineHeight);
-
 	/*
 		Plus Icon Events
 	 */
 	$('.fa-plus-square').hover(
 		function() { //Mouse Enters
-		$(this).css('font-size', '1.5em');
-		var marginAround =(lineHeight - $(this).height())/2;
-		var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
-		$(this).css('top', lineHeight + activeLine_top + marginAround );
+			changePlusSize(this, '1.5em');
 		},
 		function() { //Mouse Leaves
-			$(this).css('font-size', '1em');
-			var marginAround =(lineHeight - $(this).height())/2;
-			var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
-			$(this).css('top', lineHeight + activeLine_top + marginAround );
+			changePlusSize(this, '1em');
 		}
 	);
 
@@ -69,6 +67,7 @@ $(document).click(function(event) {
 		switch(event.target) {
 
 			case $('#goButton')[0]:
+				initSessionVars();
 				$('#main').remove();
 				$('body').css("font-family", "Lato");
 				$('#session-container').css("display","block");
@@ -93,37 +92,99 @@ $(document).click(function(event) {
 	}
 	/*In Coding Screen*/
 	else {
+		var currentLine;
 		switch(event.target) {
+			case $('#plusSymbol')[0]:
+				var plusMargin = (lineHeight - parseInt($(event.target).height())) / 2;
+				plusLineClickTop = parseInt($(event.target).css('top')) - lineHeight - plusMargin + 'px';
+				break;
+
 			case $(".ace_content")[0]:
-				var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
-				var plusMargin = (lineHeight - parseInt($('#activeLine-plus').height())) / 2;
-				$('#activeLine-plus').css('top', activeLine_top + plusMargin + lineHeight);
-				$('#activeLine-plus').css('display', 'block');
+				moveActiveLinePlus();
+				break;
+
+			case $('#sendComment')[0]:
+				sendComment(event.target);
+				$(event.target).parent().parent().parent().popover('hide');
+				break;
+
+			case $('#close')[0]:
+				$(event.target).parent().parent().popover('hide');
+
+			default:
 				break;
 		}
 	}	
 })
 
 $(document).mousemove(function(event) {
-	$('#plusSymbol').css('display', 'block');
-	var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
-	var plusMargin = (lineHeight - parseInt($('#plusSymbol').height())) / 2;
+	if (!$('#main')[0]) {
+		$('#plusSymbol').css('display', 'block');
+		activeLine_top = getActiveLineTop();
+		var plusMargin = (lineHeight - parseInt($('#plusSymbol').height())) / 2;
 
-	if (event.pageY > lineHeight) {
-		$('#plusSymbol').css('top', Math.floor(((event.pageY - lineHeight)/lineHeight))*lineHeight + lineHeight + plusMargin + 'px');
-	}
+		if (event.pageY > lineHeight) {
+			$('#plusSymbol').css('top', Math.floor(((event.pageY - lineHeight)/lineHeight))*lineHeight + lineHeight + plusMargin + 'px');
+		}
 
-	if (mouseOverActiveLine()) {
-		$('#plusSymbol').css('display', 'none');
-	}
+		if (mouseOverActiveLine()) {
+			$('#activeLine-plus').css('display', 'none');
+		}
+		else {
+			moveActiveLinePlus();
+		}
 
-	function mouseOverActiveLine() {
-		if ((event.pageY > activeLine_top + lineHeight) &&
-			(event.pageY < activeLine_top + lineHeight + lineHeight)) {
-				return true;
+		function mouseOverActiveLine() {
+			if ((event.pageY > activeLine_top + lineHeight) &&
+				(event.pageY < activeLine_top + lineHeight + lineHeight)) {
+					return true;
 			}
+		}
 	}
+	
 })
+
+
+/*
+	Helper Functions
+ */
+
+function getActiveLineTop() {
+	return parseInt($('.ace_active-line').css('top'), 10);
+}
+
+function changePlusSize(thisPlus, newSize) {
+	$(thisPlus).css('font-size', newSize);
+	var marginAround =(lineHeight - $(thisPlus).height())/2;
+	activeLine_top = getActiveLineTop();
+	$(thisPlus).css('top', lineHeight + activeLine_top + marginAround );
+}
+
+function moveActiveLinePlus() {
+	activeLine_top = getActiveLineTop();
+	var plusMargin = (lineHeight - parseInt($('#activeLine-plus').height())) / 2;
+	$('#activeLine-plus').css('top', activeLine_top + plusMargin + lineHeight);
+	$('#activeLine-plus').css('display', 'block');
+}
+
+function sendComment(event, top) {
+	var body = event.parentElement.children[0].value;
+	sessionRef.child('Comments').push({'lineTop':plusLineClickTop, 'body':body});
+	console.log('sent');
+}
+
+function initSessionVars() {
+
+	//$('body').append("<div id='session-container'><div id='userlist'></div><div id='firepad-container'></div><i class='fa fa-plus-square' id='plusSymbol' data-toggle='popover'></i><i class='fa fa-plus-square' id='activeLine-plus' style='display: none;'></i>");
+	
+	/*Give Values to the global variables*/
+	lineHeight = parseInt($('.ace_line_group').height());
+
+	/*Set code editor css dynamically using variables*/
+	$('.ace_scroller').css('top', lineHeight);
+	$('.ace_gutter').css('top', lineHeight);
+}
+
 
 /*
 	STUDENT functions
@@ -153,7 +214,7 @@ function init() {
     defaultText: 'function go() {\n  var message = "Hello, world.";\n  console.log(message);\n}'
   });
 
-  var userId = getUserId();
+  userId = getUserId();
   var displayName = $('#nameInput').val();
   var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
       document.getElementById('userlist'), userId, displayName);
@@ -192,5 +253,8 @@ function afterFirepad(ref, ace, firepad) {
 	if (userType_ == "Interviewer") {
 		ace.getSession().setUseWorker(true);
 	}
+	sessionRef = ref;
+	userRef = ref.child(userId);
+	console.log(userRef.toString());
 }
 
