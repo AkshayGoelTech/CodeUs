@@ -176,10 +176,11 @@ function sendComment(event, top) {
 	sessionRef.child('comments').push({'lineTop':plusLineClickTop, 'body':body});
 	commentMap[plusLineClickTop] = true;
 	console.log('sent');
-	addExclamationToLine(plusLineClickTop);
+	console.log(sessionRef.child('comments').toString());
 }
 
-function addExclamationToLine(line) {
+function addCommentToLine(line) {
+	console.log(line);
 	$('#session-container').append(' <i class="fa fa-comments" id="comment-' + line + '"></i> ');
 	$("#comment-" + line).css('top', parseInt(line) + lineHeight + 'px');
 }
@@ -265,5 +266,10 @@ function afterFirepad(ref, ace, firepad) {
 	sessionRef = ref;
 	userRef = ref.child(userId);
 	console.log(userRef.toString());
+
+
+	sessionRef.child('comments').on('child_added', function(childSnapshot, prevChildKey) {
+		addCommentToLine(childSnapshot.toString());	  
+	});
 }
 
