@@ -31,6 +31,7 @@ $(document).ready(function() {
 	        $('body').css("font-family", "Lato");
 	        $('#session-container').css("display","block");
 	    }
+	    
 	});
 
 	/*
@@ -170,7 +171,7 @@ function moveActiveLinePlus() {
 
 function sendComment(event, top) {
 	var body = event.parentElement.children[0].value;
-	sessionRef.child('Comments').push({'lineTop':plusLineClickTop, 'body':body});
+	sessionRef.child('comments').push({'lineTop':plusLineClickTop, 'body':body});
 	console.log('sent');
 }
 
