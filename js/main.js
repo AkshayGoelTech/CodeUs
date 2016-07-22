@@ -14,6 +14,7 @@ var sessionRef = null;
 var lineHeight = 0;
 var activeLine_top = parseInt($('.ace_active-line').css('top'), 10);
 var plusLineClickTop = 0;
+var commentMap = {};
 
 $(document).keyup(function(event) {
 	moveActiveLinePlus();
@@ -173,7 +174,14 @@ function moveActiveLinePlus() {
 function sendComment(event, top) {
 	var body = event.parentElement.children[0].value;
 	sessionRef.child('comments').push({'lineTop':plusLineClickTop, 'body':body});
+	commentMap[plusLineClickTop] = true;
 	console.log('sent');
+	addExclamationToLine(plusLineClickTop);
+}
+
+function addExclamationToLine(line) {
+	$('#session-container').append(' <i class="fa fa-comments" id="comment-' + line + '"></i> ');
+	$("#comment-" + line).css('top', parseInt(line) + lineHeight + 'px');
 }
 
 function initSessionVars() {
