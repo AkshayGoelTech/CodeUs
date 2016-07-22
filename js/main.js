@@ -31,7 +31,6 @@ $(document).ready(function() {
 	        $('body').css("font-family", "Lato");
 	        $('#session-container').css("display","block");
 	    }
-	    
 	});
 
 	/*
@@ -99,6 +98,8 @@ $(document).click(function(event) {
 			case $('#plusSymbol')[0]:
 				var plusMargin = (lineHeight - parseInt($(event.target).height())) / 2;
 				plusLineClickTop = parseInt($(event.target).css('top')) - lineHeight - plusMargin + 'px';
+				$(event.target).popover('toggle');
+				$(event.target).popover('show');
 				break;
 
 			case $(".ace_content")[0]:
