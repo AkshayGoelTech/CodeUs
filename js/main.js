@@ -269,7 +269,7 @@ function afterFirepad(ref, ace, firepad) {
 
 
 	sessionRef.child('comments').on('child_added', function(childSnapshot, prevChildKey) {
-		addCommentToLine(childSnapshot.toString());	  
+		addCommentToLine(childSnapshot.val().lineTop);	  
 	});
 }
 
